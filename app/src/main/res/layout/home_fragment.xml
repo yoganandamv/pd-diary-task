@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_columnWeight="2">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/appointment_card"
+        android:layout_width="496dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginStart="56dp"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardElevation="5dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="5dp"
+        app:strokeWidth="5dp"
+        app:strokeColor="#000000"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Appointment"
+
+            android:textSize="32sp"
+            android:layout_margin="32dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/comments_card"
+        android:layout_width="496dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintVertical_weight="1"
+
+        app:layout_constraintStart_toStartOf="@id/appointment_card"
+        app:layout_constraintTop_toBottomOf="@id/appointment_card">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textSize="32sp"
+            android:layout_margin="32dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dairy_list_card"
+        android:layout_width="496dp"
+        android:layout_height="600dp"
+        android:layout_marginStart="72dp"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintStart_toEndOf="@id/appointment_card"
+        app:layout_constraintTop_toTopOf="@id/appointment_card">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dairy"
+            android:layout_gravity="center_horizontal"
+            android:textSize="32sp"
+            android:layout_margin="32dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
