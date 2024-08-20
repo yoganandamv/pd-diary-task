@@ -15,15 +15,15 @@
 <!--        Profile Fragment-->
         <TextView
             android:id="@+id/profile_label"
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profile Fragment"
-            style="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/purple_500"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="Profile"
+            android:textColor="@color/purple_500"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+        />
 
         <!--patient id-->
         <TextView

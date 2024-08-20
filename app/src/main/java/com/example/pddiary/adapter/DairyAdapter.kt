@@ -35,6 +35,7 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var measurementWatcher: TextWatcher? = null
         val time: TextView = itemView.findViewById(R.id.time)
         val on: CheckBox = itemView.findViewById(R.id.on)
         val asleep: CheckBox = itemView.findViewById(R.id.asleep)
@@ -69,6 +70,7 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (val item = list[position]) {
             is DairyModel -> {
                 val mHolder = holder as ItemViewHolder
@@ -84,9 +86,6 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
                 mHolder.off.setOnCheckedChangeListener(null)
 //                mHolder.measurementInput.addTextChangedListener(null)
 
-
-
-
                 mHolder.time.text = item.time
                 mHolder.asleep.isChecked = item.asleep
                 mHolder.on.isChecked = item.on
@@ -100,12 +99,10 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
 //                    item.measurement = value
 //                    list[position] = item
 //                }
+                mHolder.measurementInput.isEnabled = !item.asleep
 
                 if (item.asleep) {
                     mHolder.measurementInput.setText("0")
-                    mHolder.measurementInput.isEnabled = false
-                } else {
-                    mHolder.measurementInput.isEnabled = true
                 }
 
                 val checkboxListener = View.OnClickListener {
@@ -125,26 +122,19 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
                         mHolder.measurementInput.isEnabled = false
                     } else {
                         mHolder.measurementInput.isEnabled = true
+                        item.asleep = false
+                        item.on = false
+                        item.onWithTroublesome = false
+                        item.onWithoutTroublesome = false
+                        item.off = false
                         if (it == mHolder.on) {
-                            item.asleep = false
-                            item.onWithTroublesome = false
-                            item.onWithoutTroublesome = false
-                            item.off = false
+                            item.on = true
                         } else if (it == mHolder.onWithTroublesome) {
-                            item.asleep = false
-                            item.on = false
-                            item.onWithoutTroublesome = false
-                            item.off = false
+                            item.onWithTroublesome = true
                         } else if (it == mHolder.onWithoutTroublesome) {
-                            item.asleep = false
-                            item.on = false
-                            item.onWithTroublesome = false
-                            item.off = false
+                            item.onWithoutTroublesome = true
                         } else if (it == mHolder.off) {
-                            item.asleep = false
-                            item.on = false
-                            item.onWithTroublesome = false
-                            item.onWithoutTroublesome = false
+                            item.off = true
                         }
                     }
 
@@ -203,9 +193,14 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
 //                    }
 //                })
 //            }
-            mHolder.measurementInput.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                mHolder.measurementInput.removeTextChangedListener(mHolder.measurementWatcher)
+                val textWatcher = object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        println(s)
+                    }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        println(s)
+                    }
                     override fun afterTextChanged(s: Editable?) {
                         val value = s.toString().toIntOrNull() ?: 0
                         if (value < 0 || value > 100) {
@@ -216,18 +211,22 @@ class DairyAdapter(private val list: MutableList<DairyListItem>) : RecyclerView.
                             mHolder.measurementInputLayout.error = null
                         }
                         item.measurement = value
-                        list[position] = item
                     }
-                })
+                }
+                mHolder.measurementInput.addTextChangedListener(textWatcher)
+                mHolder.measurementWatcher = textWatcher
+
+
+                list[item.idx] = item
             }
             is DairyButtonModel -> {
                 val bHolder = holder as ButtonViewHolder
                 bHolder.button.setOnClickListener {
                     //
+
                 }
             }
         }
-
     }
 
     override fun getItemCount(): Int {

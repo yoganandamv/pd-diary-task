@@ -51,8 +51,8 @@ class DairyFragment : Fragment() {
     override fun onPause() {
         val adapter = binding.dairyRecyclerview.adapter as DairyAdapter
         val listToSave = adapter.getCurrentList()
-        Log.v("fragmentPaused", listToSave.toString() )
-//        viewModel.saveDairyList(listToSave)
+         Log.v("fragmentPaused", listToSave.toString() )
+        context?.filesDir?.absoluteFile?.let { viewModel.saveDairyList(it) }
         super.onPause()
     }
 
